@@ -1,0 +1,476 @@
+
+##### str #####
+'data.frame':	120 obs. of  16 variables:
+ $ id          : Factor w/ 120 levels "P001","P002",..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ arm         : Factor w/ 3 levels "placebo","dose10",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ age         : int  53 47 40 38 55 57 47 39 26 28 ...
+ $ sex         : Factor w/ 2 levels "F","M": 1 1 1 1 1 1 1 2 1 2 ...
+ $ hamd_0      : int  25 24 25 21 22 26 26 22 21 25 ...
+ $ hamd_2      : int  20 23 21 20 24 24 26 18 20 28 ...
+ $ hamd_4      : int  20 15 19 18 22 25 21 18 15 25 ...
+ $ hamd_8      : int  22 11 15 21 20 22 16 20 14 24 ...
+ $ phq9_0      : int  16 14 20 14 18 21 16 16 9 17 ...
+ $ response    : int  0 1 0 0 0 0 0 0 0 0 ...
+ $ remission   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ nausea      : int  0 0 0 1 0 1 0 1 0 0 ...
+ $ rash        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ relapse_week: num  49.3 9.4 0.9 23.7 36.7 8.3 52 13.3 9.2 4.5 ...
+ $ relapse     : int  0 1 1 1 0 1 0 1 1 1 ...
+ $ change      : int  -3 -13 -10 0 -2 -4 -10 -2 -7 -1 ...
+
+##### summary_hamd0 #####
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  18.00   21.00   24.00   23.54   25.00   32.00 
+
+##### sd #####
+[1] 2.978624
+
+##### by_arm #####
+      arm hamd_0.mean hamd_0.sd
+1 placebo   23.700000  2.945662
+2  dose10   23.625000  2.807385
+3  dose20   23.300000  3.228082
+
+##### table_sex #####
+   
+    placebo dose10 dose20
+  F      31     22     20
+  M       9     18     20
+
+##### relapse_week_summary #####
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   11.28   30.95   27.36   43.48   52.00 
+
+##### shapiro #####
+
+	Shapiro-Wilk normality test
+
+data:  trial$hamd_0
+W = 0.97769, p-value = 0.04345
+
+
+##### shapiro_change #####
+
+	Shapiro-Wilk normality test
+
+data:  trial$change
+W = 0.97808, p-value = 0.04723
+
+
+##### ttest #####
+
+	Welch Two Sample t-test
+
+data:  change by arm
+t = 2.9837, df = 73.253, p-value = 0.003867
+alternative hypothesis: true difference in means between group placebo and group dose20 is not equal to 0
+95 percent confidence interval:
+ 1.386438 6.963562
+sample estimates:
+mean in group placebo  mean in group dose20 
+               -7.525               -11.700 
+
+
+##### wilcox #####
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  change by arm
+W = 1079, p-value = 0.007277
+alternative hypothesis: true location shift is not equal to 0
+
+Warning message:
+In wilcox.test.default(x = DATA[[1L]], y = DATA[[2L]], ...) :
+  cannot compute exact p-value with ties
+
+##### paired #####
+
+	Paired t-test
+
+data:  hamd_8 and hamd_0
+t = -13.696, df = 39, p-value < 2.2e-16
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -13.427884  -9.972116
+sample estimates:
+mean difference 
+          -11.7 
+
+
+##### cohend #####
+    dose20 
+-0.6671794 
+
+##### aov #####
+             Df Sum Sq Mean Sq F value  Pr(>F)   
+arm           2    352  176.06   4.805 0.00988 **
+Residuals   117   4287   36.64                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+##### tukey #####
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = change ~ arm, data = trial)
+
+$arm
+                 diff       lwr        upr     p adj
+dose10-placebo -2.450 -5.663298  0.7632983 0.1707731
+dose20-placebo -4.175 -7.388298 -0.9617017 0.0071324
+dose20-dose10  -1.725 -4.938298  1.4882983 0.4124482
+
+
+##### kruskal #####
+
+	Kruskal-Wallis rank sum test
+
+data:  change by arm
+Kruskal-Wallis chi-squared = 7.5849, df = 2, p-value = 0.02254
+
+
+##### padjust #####
+[1] 0.048 0.090 0.090 0.200
+
+##### tab_resp #####
+         
+           0  1
+  placebo 28 12
+  dose10  22 18
+  dose20  22 18
+
+##### chisq #####
+
+	Pearson's Chi-squared test
+
+data:  tab
+X-squared = 2.5, df = 2, p-value = 0.2865
+
+
+##### tab_nausea #####
+         
+           0  1
+  placebo 40  0
+  dose20  32  8
+
+##### fisher #####
+
+	Fisher's Exact Test for Count Data
+
+data:  tn
+p-value = 0.005306
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 1.931269      Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+
+##### chisq_expected #####
+         
+           0 1
+  placebo 36 4
+  dose20  36 4
+Warning message:
+In chisq.test(tn) : Chi-squared approximation may be incorrect
+
+##### cor_p #####
+
+	Pearson's product-moment correlation
+
+data:  trial$phq9_0 and trial$hamd_0
+t = 8.0638, df = 118, p-value = 6.86e-13
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.4666701 0.7004596
+sample estimates:
+      cor 
+0.5960536 
+
+
+##### cor_s #####
+
+	Spearman's rank correlation rho
+
+data:  trial$phq9_0 and trial$hamd_0
+S = 119205, p-value = 2.034e-12
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.5860657 
+
+
+##### lm #####
+
+Call:
+lm(formula = hamd_8 ~ arm + hamd_0 + age + sex, data = trial)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.4110  -4.7610  -0.3109   4.0424  15.8879 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -13.01924    4.76423  -2.733  0.00728 ** 
+armdose10    -2.11453    1.39076  -1.520  0.13118    
+armdose20    -3.71728    1.39739  -2.660  0.00894 ** 
+hamd_0        1.26492    0.18751   6.746 6.62e-10 ***
+age          -0.01300    0.04754  -0.273  0.78499    
+sexM         -1.22357    1.17613  -1.040  0.30039    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.054 on 114 degrees of freedom
+Multiple R-squared:  0.3364,	Adjusted R-squared:  0.3073 
+F-statistic: 11.56 on 5 and 114 DF,  p-value: 4.837e-09
+
+
+##### lm_ci #####
+                  2.5 %      97.5 %
+(Intercept) -22.4571512 -3.58133283
+armdose10    -4.8696187  0.64056760
+armdose20    -6.4854907 -0.94906013
+hamd_0        0.8934668  1.63636632
+age          -0.1071792  0.08117782
+sexM         -3.5534777  1.10633490
+
+##### glm #####
+
+Call:
+glm(formula = response ~ arm + hamd_0 + sex, family = binomial, 
+    data = trial)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  3.00385    1.63322   1.839   0.0659 .
+armdose10    0.53460    0.49127   1.088   0.2765  
+armdose20    0.44882    0.49846   0.900   0.3679  
+hamd_0      -0.16949    0.06878  -2.464   0.0137 *
+sexM         0.54643    0.40895   1.336   0.1815  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 161.52  on 119  degrees of freedom
+Residual deviance: 150.87  on 115  degrees of freedom
+AIC: 160.87
+
+Number of Fisher Scoring iterations: 4
+
+
+##### glm_or #####
+Waiting for profiling to be done...
+               OR 2.5 % 97.5 %
+(Intercept) 20.16  0.87 547.33
+armdose10    1.71  0.66   4.55
+armdose20    1.57  0.59   4.22
+hamd_0       0.84  0.73   0.96
+sexM         1.73  0.77   3.88
+
+##### diag_tab #####
+         
+          MDD_yes MDD_no
+  PHQ>=10      64     52
+  PHQ<10       16    118
+
+##### roc #####
+Area under the curve: 0.8227
+95% CI: 0.7688-0.8767 (DeLong)
+
+##### coords #####
+  threshold sensitivity specificity
+1       9.5         0.8   0.6941176
+
+##### km #####
+Call: survfit(formula = Surv(relapse_week, relapse) ~ arm, data = trial)
+
+             n events median 0.95LCL 0.95UCL
+arm=placebo 40     30   19.9     9.4    33.8
+arm=dose10  40     25   31.6    17.2      NA
+arm=dose20  40     19   45.2    31.0      NA
+
+##### km_sum #####
+Call: survfit(formula = Surv(relapse_week, relapse) ~ arm, data = trial)
+
+                arm=placebo 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+   26     18      22    0.450  0.0787       0.3195        0.634
+   52      3       8    0.193  0.0730       0.0918        0.405
+
+                arm=dose10 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+   26     22      18    0.550  0.0787        0.416        0.728
+   52      6       7    0.299  0.0858        0.171        0.525
+
+                arm=dose20 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+   26     27      13    0.675  0.0741        0.544        0.837
+   52      5       6    0.477  0.0877        0.332        0.684
+
+
+##### logrank #####
+Call:
+survdiff(formula = Surv(relapse_week, relapse) ~ arm, data = trial)
+
+             N Observed Expected (O-E)^2/E (O-E)^2/V
+arm=placebo 40       30     20.6    4.3266    6.0605
+arm=dose10  40       25     24.3    0.0175    0.0262
+arm=dose20  40       19     29.1    3.4974    5.8308
+
+ Chisq= 8  on 2 degrees of freedom, p= 0.02 
+
+##### cox #####
+Call:
+coxph(formula = Surv(relapse_week, relapse) ~ arm + age, data = trial)
+
+  n= 120, number of events= 74 
+
+               coef exp(coef)  se(coef)      z Pr(>|z|)   
+armdose10 -0.342301  0.710134  0.272303 -1.257  0.20873   
+armdose20 -0.798468  0.450018  0.295798 -2.699  0.00695 **
+age       -0.006120  0.993899  0.009397 -0.651  0.51488   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+          exp(coef) exp(-coef) lower .95 upper .95
+armdose10    0.7101      1.408    0.4164    1.2109
+armdose20    0.4500      2.222    0.2520    0.8036
+age          0.9939      1.006    0.9758    1.0124
+
+Concordance= 0.601  (se = 0.035 )
+Likelihood ratio test= 8.32  on 3 df,   p=0.04
+Wald test            = 8.07  on 3 df,   p=0.04
+Score (logrank) test = 8.37  on 3 df,   p=0.04
+
+
+##### zph #####
+       chisq df    p
+arm    0.119  2 0.94
+age    0.518  1 0.47
+GLOBAL 0.691  3 0.88
+
+##### alpha #####
+ raw_alpha std.alpha   G6(smc) average_r      S/N         ase
+ 0.8985909 0.8988712 0.8915214 0.4968801 8.888382 0.009590396
+     mean        sd  median_r
+ 1.088444 0.6300598 0.4919591
+
+##### icc #####
+Call: ICC(x = raters[, c("hamd_r1", "hamd_r2")])
+
+Intraclass correlation coefficients 
+                         type  ICC  F df1 df2       p lower bound
+Single_raters_absolute   ICC1 0.91 22  39  40 2.2e-17        0.84
+Single_random_raters     ICC2 0.91 30  39  39 1.4e-19        0.76
+Single_fixed_raters      ICC3 0.94 30  39  39 1.4e-19        0.88
+Average_raters_absolute ICC1k 0.95 22  39  40 2.2e-17        0.91
+Average_random_raters   ICC2k 0.95 30  39  39 1.4e-19        0.86
+Average_fixed_raters    ICC3k 0.97 30  39  39 1.4e-19        0.94
+                        upper bound
+Single_raters_absolute         0.95
+Single_random_raters           0.96
+Single_fixed_raters            0.97
+Average_raters_absolute        0.98
+Average_random_raters          0.98
+Average_fixed_raters           0.98
+
+ Number of subjects = 40     Number of Judges =  2
+See the help file for a discussion of the other 4 McGraw and Wong estimates,
+##### kappa #####
+Call: cohen.kappa1(x = x, w = w, n.obs = n.obs, alpha = alpha, levels = levels)
+
+Cohen Kappa and Weighted Kappa correlation coefficients and confidence boundaries 
+                 lower estimate upper
+unweighted kappa  0.27     0.54   0.8
+weighted kappa    0.27     0.54   0.8
+
+ Number of subjects = 40 
+
+##### lmer #####
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: hamd ~ week * arm + (1 | id)
+   Data: long
+
+REML criterion at convergence: 2724.2
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6358 -0.6256 -0.0286  0.5796  3.6514 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 18.36    4.285   
+ Residual             10.07    3.173   
+Number of obs: 480, groups:  id, 120
+
+Fixed effects:
+               Estimate Std. Error       df t value Pr(>|t|)    
+(Intercept)     23.1350     0.7810 158.3501  29.622  < 2e-16 ***
+week            -0.9386     0.0848 357.0000 -11.068  < 2e-16 ***
+armdose10       -0.3100     1.1045 158.3501  -0.281   0.7793    
+armdose20       -0.9650     1.1045 158.3501  -0.874   0.3836    
+week:armdose10  -0.2971     0.1199 357.0000  -2.478   0.0137 *  
+week:armdose20  -0.4975     0.1199 357.0000  -4.148 4.19e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) week   armd10 armd20 wk:r10
+week        -0.380                            
+armdose10   -0.707  0.269                     
+armdose20   -0.707  0.269  0.500              
+week:rmds10  0.269 -0.707 -0.380 -0.190       
+week:rmds20  0.269 -0.707 -0.190 -0.380  0.500
+
+##### anova_mm #####
+Type III Analysis of Variance Table with Satterthwaite's method
+         Sum Sq Mean Sq NumDF  DenDF  F value    Pr(>F)    
+week     6082.8  6082.8     1 357.00 604.2297 < 2.2e-16 ***
+arm         8.0     4.0     2 158.35   0.3979 0.6723839    
+week:arm  175.4    87.7     2 357.00   8.7135 0.0002019 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+##### pwr #####
+
+     Two-sample t test power calculation 
+
+              n = 63.76561
+              d = 0.5
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group
+
+
+##### powert #####
+
+     Two-sample t test power calculation 
+
+              n = 63.76576
+          delta = 3
+             sd = 6
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group
+
+
+##### powerprop #####
+
+     Two-sample comparison of proportions power calculation 
+
+              n = 92.99884
+             p1 = 0.3
+             p2 = 0.5
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group
+
